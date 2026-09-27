@@ -1,22 +1,262 @@
 {
   "domain": "toy-certification-investigation",
-  "version": 1,
+  "version": 2,
   "sample_id": "record-012",
   "actors": [
     "认证执法人员",
+    "认证机构",
     "玩具生产企业",
     "经销门店",
     "消费者通知人员"
   ],
   "facts": [
-    "案例中的玩具包装使用了属于其他产品的认证证书编号",
-    "涉案产品由生产企业供货至玩具店销售",
-    "监管部门根据仓库实物和销售数量作出处置"
+    "涉案玩具包装印有CCC标志，扫码后指向另一型号产品的证书",
+    "排查需区分包装返工失误与多型号共用证书的系统性冒用",
+    "证书核定产品范围以认证机构记录为准",
+    "涉案产品由生产企业供货至多家门店销售",
+    "监管部门依据仓库实物、流向记录和已售数量作出处置",
+    "证书范围、包装版本、生产入库、供货门店、抽样照片、询问笔录与已售数量按发生时间互相印证"
   ],
   "constraints": [
     "证书产品绑定",
     "生产经销流向",
     "跨地区协查",
-    "下架召回整改"
+    "下架召回整改",
+    "批量扫码与跨地区补报按来源合并，同一实物不得重复计入",
+    "证书暂停、恢复或换绑不改变早先的市场事实",
+    "门店仅接收自身应下架与通知的范围",
+    "企业可补交整改材料，但无权删除执法材料",
+    "处罚或解除措施必须指向具体实物、证书版本、流向与消费者触达结果"
+  ],
+  "certificates": [
+    {
+      "certificate_id": "C2026-0110",
+      "version": "V3",
+      "holder": "玩具生产企业",
+      "scope_models": ["TX-200"],
+      "issued_at": "2026-01-10",
+      "status": "暂停"
+    }
+  ],
+  "stores": [
+    "城东玩具店",
+    "城西玩具店",
+    "邻市合作门店"
+  ],
+  "timeline": [
+    {
+      "event_id": "evt-001",
+      "occurred_at": "2026-01-10",
+      "kind": "证书范围",
+      "actor": "认证机构",
+      "summary": "证书C2026-0110（版本V3）核定产品范围仅含型号TX-200磁力拼图",
+      "refs": []
+    },
+    {
+      "event_id": "evt-002",
+      "occurred_at": "2026-02-05",
+      "kind": "包装版本",
+      "actor": "玩具生产企业",
+      "summary": "包装版本P1付印，版面印有证书编号C2026-0110",
+      "refs": ["evt-001"]
+    },
+    {
+      "event_id": "evt-003",
+      "occurred_at": "2026-02-15",
+      "kind": "包装版本",
+      "actor": "玩具生产企业",
+      "summary": "返工包装版本P1R付印，仍沿用证书编号C2026-0110",
+      "refs": ["evt-002"]
+    },
+    {
+      "event_id": "evt-004",
+      "occurred_at": "2026-02-20",
+      "kind": "生产入库",
+      "actor": "玩具生产企业",
+      "summary": "型号TX-100星空积木入库580件，其中P1包装500件、P1R包装80件",
+      "refs": ["evt-002", "evt-003"],
+      "quantity": 580
+    },
+    {
+      "event_id": "evt-005",
+      "occurred_at": "2026-03-01",
+      "kind": "供货门店",
+      "actor": "玩具生产企业",
+      "summary": "向城东玩具店供货300件（批次lot-a、lot-b）",
+      "refs": ["evt-004"],
+      "lot_ids": ["lot-a", "lot-b"],
+      "quantity": 300
+    },
+    {
+      "event_id": "evt-006",
+      "occurred_at": "2026-03-01",
+      "kind": "供货门店",
+      "actor": "玩具生产企业",
+      "summary": "向城西玩具店供货200件（批次lot-c）",
+      "refs": ["evt-004"],
+      "lot_ids": ["lot-c"],
+      "quantity": 200
+    },
+    {
+      "event_id": "evt-007",
+      "occurred_at": "2026-03-02",
+      "kind": "供货门店",
+      "actor": "玩具生产企业",
+      "summary": "向邻市合作门店供货80件（批次lot-d）",
+      "refs": ["evt-004"],
+      "lot_ids": ["lot-d"],
+      "quantity": 80
+    },
+    {
+      "event_id": "evt-008",
+      "occurred_at": "2026-03-15",
+      "kind": "销售记录",
+      "actor": "经销门店",
+      "summary": "城东玩具店售出120件（批次lot-b）",
+      "refs": ["evt-005"],
+      "lot_ids": ["lot-b"],
+      "quantity": 120
+    },
+    {
+      "event_id": "evt-009",
+      "occurred_at": "2026-03-18",
+      "kind": "扫码上报",
+      "actor": "认证执法人员",
+      "summary": "批量扫码发现TX-100包装上的CCC标志指向TX-200证书",
+      "refs": ["evt-008"]
+    },
+    {
+      "event_id": "evt-010",
+      "occurred_at": "2026-03-20",
+      "kind": "抽样照片",
+      "actor": "认证执法人员",
+      "summary": "现场抽样并拍摄包装与标志照片留证",
+      "refs": ["evt-009"]
+    },
+    {
+      "event_id": "evt-011",
+      "occurred_at": "2026-03-22",
+      "kind": "询问笔录",
+      "actor": "认证执法人员",
+      "summary": "企业称包装返工时沿用了TX-200的证书编号，涉及P1与P1R两个包装版本",
+      "refs": ["evt-010", "evt-002", "evt-003"]
+    },
+    {
+      "event_id": "evt-012",
+      "occurred_at": "2026-03-25",
+      "kind": "跨地区补报",
+      "actor": "认证执法人员",
+      "summary": "邻市协查补报批次lot-d流入80件，并重复涉及批次lot-c",
+      "refs": ["evt-007", "evt-006"]
+    },
+    {
+      "event_id": "evt-013",
+      "occurred_at": "2026-04-02",
+      "kind": "整改补交",
+      "actor": "玩具生产企业",
+      "summary": "企业补交整改报告与换版包装P2样张",
+      "refs": ["evt-011"]
+    },
+    {
+      "event_id": "evt-014",
+      "occurred_at": "2026-04-10",
+      "kind": "处置决定",
+      "actor": "认证执法人员",
+      "summary": "责令下架在架批次、通知已售消费者并依法处罚",
+      "refs": ["evt-012", "evt-013"]
+    }
+  ],
+  "lots": [
+    {
+      "lot_id": "lot-a",
+      "model": "TX-100",
+      "packaging_version": "P1",
+      "quantity": 180,
+      "holder": "城东玩具店",
+      "status": "下架"
+    },
+    {
+      "lot_id": "lot-b",
+      "model": "TX-100",
+      "packaging_version": "P1",
+      "quantity": 120,
+      "holder": "城东玩具店",
+      "status": "已售"
+    },
+    {
+      "lot_id": "lot-c",
+      "model": "TX-100",
+      "packaging_version": "P1",
+      "quantity": 200,
+      "holder": "城西玩具店",
+      "status": "下架"
+    },
+    {
+      "lot_id": "lot-d",
+      "model": "TX-100",
+      "packaging_version": "P1R",
+      "quantity": 80,
+      "holder": "邻市合作门店",
+      "status": "下架"
+    }
+  ],
+  "reports": [
+    {
+      "report_id": "rep-01",
+      "source": "批量扫码",
+      "reported_at": "2026-03-18",
+      "lot_ids": ["lot-a", "lot-b", "lot-c"]
+    },
+    {
+      "report_id": "rep-02",
+      "source": "跨地区补报",
+      "reported_at": "2026-03-25",
+      "lot_ids": ["lot-c", "lot-d"]
+    }
+  ],
+  "certificate_status": [
+    {
+      "certificate_id": "C2026-0110",
+      "certificate_version": "V3",
+      "changed_at": "2026-03-28",
+      "status": "暂停",
+      "note": "冒用调查期间暂停证书，不改写此前市场事实"
+    }
+  ],
+  "notices": [
+    {
+      "notice_id": "ntc-01",
+      "to": "城东玩具店",
+      "sent_at": "2026-04-10",
+      "action": "下架在架批次并通知已售消费者",
+      "lot_ids": ["lot-a", "lot-b"]
+    },
+    {
+      "notice_id": "ntc-02",
+      "to": "城西玩具店",
+      "sent_at": "2026-04-10",
+      "action": "下架在架批次",
+      "lot_ids": ["lot-c"]
+    },
+    {
+      "notice_id": "ntc-03",
+      "to": "邻市合作门店",
+      "sent_at": "2026-04-10",
+      "action": "下架在架批次",
+      "lot_ids": ["lot-d"]
+    }
+  ],
+  "dispositions": [
+    {
+      "disposition_id": "disp-01",
+      "kind": "处罚",
+      "decided_at": "2026-04-10",
+      "lot_ids": ["lot-a", "lot-b", "lot-c", "lot-d"],
+      "certificate_id": "C2026-0110",
+      "certificate_version": "V3",
+      "flow_refs": ["evt-004", "evt-005", "evt-006", "evt-007", "evt-008"],
+      "consumer_reach": "经城东玩具店与消费者通知人员触达，已售120件中96件完成退货退款，其余持续跟进",
+      "summary": "责令下架召回冒用证书批次并处罚款"
+    }
   ]
 }
